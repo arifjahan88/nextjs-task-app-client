@@ -33,7 +33,7 @@ const signup = () => {
 
         <form onSubmit={handlesignup} className="my-10">
           <div className="flex flex-col space-y-5">
-            <label for="email">
+            <label htmlFor="name">
               <p className="font-medium text-slate-700 pb-2">Your Name</p>
               <input
                 id="name"
@@ -43,7 +43,7 @@ const signup = () => {
                 placeholder="Your Name"
               />
             </label>
-            <label for="email">
+            <label htmlFor="email">
               <p className="font-medium text-slate-700 pb-2">Email address</p>
               <input
                 id="email"
@@ -53,7 +53,7 @@ const signup = () => {
                 placeholder="Enter email address"
               />
             </label>
-            <label for="password">
+            <label htmlFor="password">
               <p className="font-medium text-slate-700 pb-2">Password</p>
               <input
                 id="password"
@@ -71,11 +71,11 @@ const signup = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                stroke-width="2"
+                strokeWidth="2"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                 />
               </svg>
@@ -95,11 +95,11 @@ const signup = () => {
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    stroke-width="2"
+                    strokeWidth="2"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                     />
                   </svg>

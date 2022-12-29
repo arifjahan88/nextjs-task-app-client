@@ -17,16 +17,18 @@ const Homemain = () => {
 
   return (
     <div>
-      <h2 className="lg:text-6xl md:text-5xl text-2xl px-10 text-center font-extralight my-5">
+      <h2 className="lg:text-6xl md:text-5xl text-2xl px-10 text-center font-extralight my-10 text-blue-500">
         Organize your Daily Task, work and projects with Task Management tools
       </h2>
-      <h3 className="text-center lg:text-2xl sm:text-xl lg:w-1/2 mx-auto pt-5 text-gray-600">
+      <h3 className="text-center lg:text-2xl sm:text-xl lg:w-1/2 mx-auto pt-5 text-gray-500 my-10">
         Task Management app lets you put all your plans and projects in one
         place so you can work productively without the chaos and confusion.
       </h3>
-      <div className="border-4 lg:w-1/3 mx-auto p-8 flex justify-center bg-blue-200 rounded-xl">
-        <div className="text-center ">
-          <h2 className="my-5 text-3xl font-semibold">Get Started</h2>
+      <h2 className="mt-5 mb-2 text-orange-600 text-3xl font-semibold font-mono text-center">
+        Get Started
+      </h2>
+      <div className="lg:w-1/4 mx-auto p-8 flex justify-center bg-blue-200 rounded-xl">
+        <div className="text-center">
           <button
             onClick={handlegooglelogin}
             className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded "
@@ -34,10 +36,10 @@ const Homemain = () => {
             Continue with Google
           </button>
           <br />
-          <h2 className="my-3">OR</h2>
-          <Link href="/signup">
-            <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded items-center">
-              Signup With Email
+          <h2 className="my-3 font-serif">OR</h2>
+          <Link href="/signup" className="w-full">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+              Continue With Email
             </button>
           </Link>
         </div>

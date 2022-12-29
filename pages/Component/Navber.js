@@ -28,7 +28,10 @@ const Navber = () => {
       <div className="justify-between lg:justify-between px-4 mx-auto lg:max-w-7xl lg:items-center lg:flex lg:px-8">
         <div>
           <div className="flex items-center justify-between py-3 lg:py-5 lg:block">
-            <p className="text-2xl font-bold text-gray-500">Arif Jahan</p>
+            <p className="text-2xl font-bold text-gray-500">
+              <span className="text-orange-600">Task</span>{" "}
+              <span className="text-lime-600">Management</span>
+            </p>
             {/* <img className="w-40" src={navlogo} alt=""></img> */}
 
             <div className="lg:hidden">
@@ -89,12 +92,16 @@ const Navber = () => {
                     <Link href="/mytask">My Task</Link>
                   </li>
                   <li className="text-gray-500 font-semibold hover:text-indigo-500">
-                    <a href="">Completed Task</a>
+                    <Link href="/completetask">Completed Task</Link>
                   </li>
                   <li className="text-gray-500 font-semibold hover:text-indigo-500">
-                    <a className="hover:cursor-pointer" onClick={logout}>
+                    <Link
+                      href="/"
+                      className="hover:cursor-pointer"
+                      onClick={logout}
+                    >
                       Log Out
-                    </a>
+                    </Link>
                   </li>
                 </>
               )}

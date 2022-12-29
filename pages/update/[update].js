@@ -1,9 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/router";
 import React, { useContext } from "react";
-import Navber from "./Component/Navber";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "./Component/Contexts/AuthProvider";
+import { AuthContext } from "../Component/Contexts/AuthProvider";
+import Navber from "../Component/Navber";
 
-const addtask = () => {
+const update = () => {
+  const router = useRouter();
+  const _id = router.query.update;
   const { user } = useContext(AuthContext);
   const photohostkey = "ffddeb2edca954e6ab34fa5f9dcd74ad";
   const {
@@ -12,7 +16,16 @@ const addtask = () => {
     handleSubmit,
   } = useForm();
 
-  const handleadddoctor = (data) => {
+  const { data: updatedata = [], isLoading } = useQuery({
+    queryKey: ["updatedata", _id],
+    queryFn: async () => {
+      const res = await fetch(`http://localhost:5000/updatetask/${_id}`);
+      const data = await res.json();
+      return data;
+    },
+  });
+
+  const handlaupdatetask = (data) => {
     const taskdata = data.task;
     const image = data.image[0];
     const formData = new FormData();
@@ -26,45 +39,51 @@ const addtask = () => {
       .then((imgdata) => {
         console.log(imgdata);
         if (imgdata.success) {
-          const addtaskdata = {
+          const updatedtaskdata = {
             Task: taskdata,
             image: imgdata.data.url,
             name: user.displayName,
             email: user.email,
           };
-
-          //save Task informations
-          fetch("http://localhost:5000/addtask", {
-            method: "POST",
+          fetch(`http://localhost:5000/updatetask/${_id}`, {
+            method: "PUT",
             headers: {
               "content-type": "application/json",
             },
-            body: JSON.stringify(addtaskdata),
+            body: JSON.stringify(updatedtaskdata),
           })
             .then((res) => res.json())
-            .then((result) => {
-              console.log(result);
+            .then((data) => {
+              if (data.modifiedCount > 0) {
+                console.log(data);
+                alert("Your review is Updated");
+              }
             });
         }
       });
   };
+
+  if (isLoading) {
+    return <p>Loading</p>;
+  }
   return (
     <div>
       <Navber></Navber>
       <form
-        onSubmit={handleSubmit(handleadddoctor)}
+        onSubmit={handleSubmit(handlaupdatetask)}
         className="lg:w-1/2 mx-auto"
       >
         <div className="mt-4">
           <div>
             <label
-              className="dark:text-gray-200 text-2xl font-medium font-serif text-sky-600"
+              className="text-black dark:text-gray-200 text-3xl font-mono"
               htmlFor="passwordConfirmation"
             >
-              Add Your Task
+              Please Update Your Task {updatedata.name}
             </label>
             <textarea
               id="task"
+              defaultValue={updatedata.Task}
               type="textarea"
               {...register("task", { required: "Task is required" })}
               placeholder="Add your task here . . ."
@@ -72,10 +91,8 @@ const addtask = () => {
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
             ></textarea>
           </div>
-          <div className="mt-5 lg:w-1/2 mx-auto">
-            <label className="dark:text-gray-200 text-2xl font-medium font-serif text-sky-600">
-              Image
-            </label>
+          <div>
+            <label className="block text-black text-2xl mt-5">Image</label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
                 <svg
@@ -122,4 +139,4 @@ const addtask = () => {
   );
 };
 
-export default addtask;
+export default update;

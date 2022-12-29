@@ -5,22 +5,56 @@ import { useQuery } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
 
-const mytask = () => {
+const completetask = () => {
   const { user } = useContext(AuthContext);
 
-  const { data: taskdata = [], refetch } = useQuery({
-    queryKey: ["taskdata", user?.email],
+  const { data: completeddata = [], refetch } = useQuery({
+    queryKey: ["completeddata", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/addtaskall?email=${user?.email}`
+        `http://localhost:5000/taskcompleted?email=${user?.email}`
       );
       const data = await res.json();
       return data;
     },
   });
 
+  //   Not Completed Task.
+  const handletasknotcompleted = (data) => {
+    const notcompleteddata = {
+      Task: data.Task,
+      image: data.image,
+      name: data.name,
+      email: data.email,
+    };
+    fetch("http://localhost:5000/addtask", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(notcompleteddata),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        fetch(`http://localhost:5000/taskcompleted/${data._id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((taskdata) => {
+            if (taskdata.deletedCount > 0) {
+              toast.error(
+                `${data.name} Task Not Completed. Please Go my Task.`
+              );
+              refetch();
+            }
+          });
+      });
+  };
+
+  //  Delete Task.
   const handledelete = (data) => {
-    fetch(`http://localhost:5000/taskdelete/${data._id}`, {
+    fetch(`http://localhost:5000/taskcompleted/${data._id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -32,43 +66,11 @@ const mytask = () => {
       });
   };
 
-  const handledatskcompleted = (data) => {
-    const sendtaskdata = {
-      Task: data.Task,
-      image: data.image,
-      name: data.name,
-      email: data.email,
-    };
-    fetch("http://localhost:5000/taskcompleted", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(sendtaskdata),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-
-        // delete this.
-        fetch(`http://localhost:5000/taskdelete/${data._id}`, {
-          method: "DELETE",
-        })
-          .then((res) => res.json())
-          .then((taskdata) => {
-            if (taskdata.deletedCount > 0) {
-              toast.success(`${data.name} Task Completed SuccessFully`);
-              refetch();
-            }
-          });
-      });
-  };
-
   return (
     <div>
       <Navber></Navber>
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-5 ">
-        {taskdata.map((data) => (
+        {completeddata.map((data) => (
           <div
             key={data._id}
             className="py-6 flex flex-col justify-center sm:py-12"
@@ -102,12 +104,6 @@ const mytask = () => {
 
                     <div className="flex mt-4 space-x-3 md:mt-6">
                       <Link
-                        href={`/update/${data._id}`}
-                        className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                      >
-                        Update
-                      </Link>
-                      <Link
                         href=""
                         onClick={() => handledelete(data)}
                         className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
@@ -116,10 +112,10 @@ const mytask = () => {
                       </Link>
                       <Link
                         href=""
-                        onClick={() => handledatskcompleted(data)}
+                        onClick={() => handletasknotcompleted(data)}
                         className="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-700 dark:focus:ring-gray-700"
                       >
-                        Task Completed
+                        Task Not Completed
                       </Link>
                     </div>
                   </div>
@@ -129,10 +125,9 @@ const mytask = () => {
           </div>
         ))}
       </div>
-
       <Toaster />
     </div>
   );
 };
 
-export default mytask;
+export default completetask;
