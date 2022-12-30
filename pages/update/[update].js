@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../Component/Contexts/AuthProvider";
+import Loading from "../Component/Loading/Loading";
 import Navber from "../Component/Navber";
 
 const update = () => {
@@ -66,8 +67,9 @@ const update = () => {
   };
 
   if (isLoading) {
-    return <p>Loading</p>;
+    return <Loading></Loading>;
   }
+
   return (
     <div>
       <Navber></Navber>
