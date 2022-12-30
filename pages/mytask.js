@@ -4,15 +4,20 @@ import Navber from "./Component/Navber";
 import { useQuery } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
+import Loading from "./Component/Loading/Loading";
 
 const mytask = () => {
   const { user } = useContext(AuthContext);
 
-  const { data: taskdata = [], refetch } = useQuery({
+  const {
+    data: taskdata = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["taskdata", user?.email],
     queryFn: async () => {
       const res = await fetch(
-        `http://localhost:5000/addtaskall?email=${user?.email}`
+        `https://task-app-server-kappa.vercel.app/addtaskall?email=${user?.email}`
       );
       const data = await res.json();
       return data;
@@ -20,7 +25,7 @@ const mytask = () => {
   });
 
   const handledelete = (data) => {
-    fetch(`http://localhost:5000/taskdelete/${data._id}`, {
+    fetch(`https://task-app-server-kappa.vercel.app/taskdelete/${data._id}`, {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -39,7 +44,7 @@ const mytask = () => {
       name: data.name,
       email: data.email,
     };
-    fetch("http://localhost:5000/taskcompleted", {
+    fetch("https://task-app-server-kappa.vercel.app/taskcompleted", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -51,9 +56,12 @@ const mytask = () => {
         console.log(result);
 
         // delete this.
-        fetch(`http://localhost:5000/taskdelete/${data._id}`, {
-          method: "DELETE",
-        })
+        fetch(
+          `https://task-app-server-kappa.vercel.app/taskdelete/${data._id}`,
+          {
+            method: "DELETE",
+          }
+        )
           .then((res) => res.json())
           .then((taskdata) => {
             if (taskdata.deletedCount > 0) {
@@ -63,6 +71,10 @@ const mytask = () => {
           });
       });
   };
+
+  if (isLoading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <div>
@@ -75,7 +87,7 @@ const mytask = () => {
           >
             <div className="relative py-3 sm:max-w-xl sm:mx-auto">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-300 to-blue-600 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"></div>
-              <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
+              <div className="relative px-4 py-10 bg-white hover:scale-110 ease-in duration-150 shadow-lg sm:rounded-3xl sm:p-20">
                 <div className="max-w-md mx-auto">
                   <div className="flex flex-col items-center m-5">
                     <img
@@ -83,18 +95,16 @@ const mytask = () => {
                       src={data.image}
                       alt="image"
                     />
-                    <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+                    <h5 className="mb-1 text-xl font-medium text-gray-900">
                       {data.name}
                     </h5>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {data.email}
-                    </span>
+                    <span className="text-sm text-gray-500">{data.email}</span>
                     <div>
-                      <h2 className="text-sm font-medium text-center">
+                      <h2 className="text-sm font-medium text-center text-gray-900">
                         Your task
                       </h2>
                       <div className="mt-3 bg-slate-200 p-2 rounded-xl text-justify">
-                        <span className="text-sm dark:text-gray-400 text-gray-600">
+                        <span className="text-sm dark:text-gray-900 text-gray-600">
                           {data.Task}
                         </span>
                       </div>

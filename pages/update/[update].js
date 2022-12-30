@@ -19,7 +19,9 @@ const update = () => {
   const { data: updatedata = [], isLoading } = useQuery({
     queryKey: ["updatedata", _id],
     queryFn: async () => {
-      const res = await fetch(`http://localhost:5000/updatetask/${_id}`);
+      const res = await fetch(
+        `https://task-app-server-kappa.vercel.app/updatetask/${_id}`
+      );
       const data = await res.json();
       return data;
     },
@@ -45,7 +47,7 @@ const update = () => {
             name: user.displayName,
             email: user.email,
           };
-          fetch(`http://localhost:5000/updatetask/${_id}`, {
+          fetch(`https://task-app-server-kappa.vercel.app/updatetask/${_id}`, {
             method: "PUT",
             headers: {
               "content-type": "application/json",
@@ -96,7 +98,7 @@ const update = () => {
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
                 <svg
-                  className="mx-auto h-12 w-12 text-black"
+                  className="mx-auto h-12 w-12 text-black dark:text-white"
                   stroke="currentColor"
                   fill="none"
                   viewBox="0 0 48 48"
@@ -117,13 +119,15 @@ const update = () => {
                     <span className="text-center">Upload your photo </span>
                     <input
                       type="file"
-                      className=""
+                      className="text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                       {...register("image", { required: "Image is required" })}
                       placeholder="Image"
                     />
                   </label>
                 </div>
-                <p className="text-xs text-black">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs text-black dark:text-white">
+                  PNG, JPG, GIF up to 10MB
+                </p>
               </div>
             </div>
           </div>

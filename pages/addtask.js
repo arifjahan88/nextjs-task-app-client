@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Navber from "./Component/Navber";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "./Component/Contexts/AuthProvider";
+import { toast, Toaster } from "react-hot-toast";
 
 const addtask = () => {
   const { user } = useContext(AuthContext);
@@ -26,6 +27,7 @@ const addtask = () => {
       .then((imgdata) => {
         console.log(imgdata);
         if (imgdata.success) {
+          toast.success("Your Image Upload successful");
           const addtaskdata = {
             Task: taskdata,
             image: imgdata.data.url,
@@ -34,7 +36,7 @@ const addtask = () => {
           };
 
           //save Task informations
-          fetch("http://localhost:5000/addtask", {
+          fetch("https://task-app-server-kappa.vercel.app/addtask", {
             method: "POST",
             headers: {
               "content-type": "application/json",
@@ -43,6 +45,7 @@ const addtask = () => {
           })
             .then((res) => res.json())
             .then((result) => {
+              toast.success("Your task Upload successful.");
               console.log(result);
             });
         }
@@ -79,7 +82,7 @@ const addtask = () => {
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
                 <svg
-                  className="mx-auto h-12 w-12 text-black"
+                  className="mx-auto h-12 w-12 text-black dark:text-white"
                   stroke="currentColor"
                   fill="none"
                   viewBox="0 0 48 48"
@@ -100,13 +103,15 @@ const addtask = () => {
                     <span className="text-center">Upload your photo </span>
                     <input
                       type="file"
-                      className=""
+                      className="text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
                       {...register("image", { required: "Image is required" })}
                       placeholder="Image"
                     />
                   </label>
                 </div>
-                <p className="text-xs text-black">PNG, JPG, GIF up to 10MB</p>
+                <p className="text-xs text-black dark:text-white">
+                  PNG, JPG, GIF up to 10MB
+                </p>
               </div>
             </div>
           </div>
@@ -118,6 +123,7 @@ const addtask = () => {
           </button>
         </div>
       </form>
+      <Toaster />
     </div>
   );
 };

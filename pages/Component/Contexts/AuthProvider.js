@@ -1,6 +1,6 @@
 "use client";
 import React, { createContext, useEffect, useState } from "react";
-import app from "../Firebase/Firebase.config";
+
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,6 +10,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import app from "../../../firebase/firebase";
 
 export const AuthContext = createContext();
 

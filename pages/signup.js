@@ -28,8 +28,8 @@ const signup = () => {
   return (
     <div>
       <Navber></Navber>
-      <div className="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow shadow-slate-300">
-        <h1 className="text-4xl font-medium">Please Signup</h1>
+      <div className="max-w-lg mx-auto my-10 bg-white dark:bg-indigo-300 p-8 rounded-xl shadow shadow-slate-300 ">
+        <h1 className="text-4xl font-medium dark:text-white">Please Signup</h1>
 
         <form onSubmit={handlesignup} className="my-10">
           <div className="flex flex-col space-y-5">

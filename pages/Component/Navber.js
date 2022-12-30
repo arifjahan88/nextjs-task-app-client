@@ -1,34 +1,51 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "./Contexts/AuthProvider";
+import { useTheme } from "next-themes";
+import { BsFillMoonFill, BsFillSunFill } from "react-icons/bs";
 
 const Navber = () => {
-  const [shadow, setShadow] = useState(false);
   const [navbar, setNavbar] = useState(false);
   const { user, logout } = useContext(AuthContext);
 
+  const { systemTheme, theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    const handleShadow = () => {
-      if (window.scrollY >= 90) {
-        setShadow(true);
-      } else {
-        setShadow(false);
-      }
-    };
-    window.addEventListener("scroll", handleShadow);
+    setMounted(true);
   }, []);
+
+  //Dark Mode
+  const renderThemeChanger = () => {
+    if (!mounted) return null;
+
+    const currentTheme = theme === "system" ? systemTheme : theme;
+
+    if (currentTheme === "dark") {
+      return (
+        <BsFillSunFill
+          className="text-2xl text-yellow-400"
+          role="button"
+          onClick={() => setTheme("light")}
+        />
+      );
+    } else {
+      return (
+        <BsFillMoonFill
+          className="text-2xl text-gray-700 "
+          role="button"
+          onClick={() => setTheme("dark")}
+        />
+      );
+    }
+  };
   return (
-    <nav
-      className={
-        shadow
-          ? " h-15 z-[100] ease-in-out duration-300 w-full bg-[#ecf0f3] shadow-xl"
-          : " h-15 z-[100] w-full bg-[#ecf0f3]"
-      }
-    >
+    <nav className="h-15 z-[100] ease-in-out duration-300 w-full shadow-xl">
       <div className="justify-between lg:justify-between px-4 mx-auto lg:max-w-7xl lg:items-center lg:flex lg:px-8">
         <div>
           <div className="flex items-center justify-between py-3 lg:py-5 lg:block">
             <p className="text-2xl font-bold text-gray-500">
+              <span></span>
               <span className="text-orange-600">Task</span>{" "}
               <span className="text-lime-600">Management</span>
             </p>
@@ -82,7 +99,8 @@ const Navber = () => {
               <li className="text-gray-500 font-semibold hover:text-indigo-500">
                 <Link href="/">Home</Link>
               </li>
-              {user?.uid && (
+
+              {user?.uid ? (
                 <>
                   <li className="text-gray-500 font-semibold hover:text-indigo-500">
                     <Link href="/addtask">Add Task</Link>
@@ -103,6 +121,11 @@ const Navber = () => {
                       Log Out
                     </Link>
                   </li>
+                  <li>{renderThemeChanger()}</li>
+                </>
+              ) : (
+                <>
+                  <li>{renderThemeChanger()}</li>
                 </>
               )}
             </ul>
