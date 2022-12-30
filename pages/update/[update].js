@@ -59,7 +59,7 @@ const update = () => {
             .then((data) => {
               if (data.modifiedCount > 0) {
                 console.log(data);
-                alert("Your review is Updated");
+                alert("Your Task is Updated");
               }
             });
         }
