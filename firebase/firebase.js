@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDrUNypBJr4XJPueYfMsSl45KREhrICzDY",
-  authDomain: "nextjs-task-management-4c2d7.firebaseapp.com",
-  projectId: "nextjs-task-management-4c2d7",
-  storageBucket: "nextjs-task-management-4c2d7.appspot.com",
-  messagingSenderId: "370023505351",
-  appId: "1:370023505351:web:395c1e8bd56fd7174ecde2",
+  apiKey: "AIzaSyDqkxIIFMRTR3B4g1xSVUSDTokagj_r-4I",
+  authDomain: "task-management-app-a3ad9.firebaseapp.com",
+  projectId: "task-management-app-a3ad9",
+  storageBucket: "task-management-app-a3ad9.appspot.com",
+  messagingSenderId: "422437970543",
+  appId: "1:422437970543:web:d80b7b1e76d9f20466a39a",
 };
 
 // Initialize Firebase
